@@ -1,0 +1,56 @@
+<apex:page controller="AccountListController">
+
+    <script>
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.AccountListController.getAccounts}',
+            function (result, event) {
+                if (result) {
+                    let markup = "<table border=1><tr><th>Name</th><th>Phone</th><th>Industry</th><th>Type</th></tr> ";
+
+                    for (let i of result.values()) {
+                        markup += "<tr>" +
+                            "<td>" + i.Name + "</td>" +
+                            "<td>" + i.Phone + "</td>" +
+                            "<td>" + i.Industry + "</td>" +
+                            "<td>" + i.Type + "</td>" +
+                            "</tr> ";
+                    }
+                    markup += "</table>";
+                    document.getElementById('accTable').innerHTML = markup;
+                } else {
+                    document.getElementById('accTable').innerHTML = "<p> No results found </p>";
+                }
+            },
+            { escape: true }
+        );
+
+        function createAccount() {
+            let accName = document.getElementById('{!$Component.newAccForm.newAccPageBlock.newAccPageBlockSection.accName}').value;
+            let accPhone = document.getElementById('{!$Component.newAccForm.newAccPageBlock.newAccPageBlockSection.accPhone}').value;
+            let accIndustry = document.getElementById('{!$Component.newAccForm.newAccPageBlock.newAccPageBlockSection.accIndustry}').value;
+            let accType = document.getElementById('{!$Component.newAccForm.newAccPageBlock.newAccPageBlockSection.accType}').value;
+
+            let acc = { Name: accName, Phone: accPhone, Industry: accIndustry, Type: accType };
+            console.log(acc);
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.AccountListController.createAccount}',
+                acc, function (result, event) {
+                    console.log(event);
+                }
+            );
+        }
+    </script>
+    
+    <apex:form id="newAccForm">
+        <apex:pageBlock id="newAccPageBlock" title="New Account">
+            <apex:pageBlockSection id="newAccPageBlockSection">
+                <apex:inputText label="Name" id="accName" />
+                <apex:inputText label="Phone" id="accPhone" />
+                <apex:inputField value="{!acc.Industry} " id="accIndustry" />
+                <apex:inputField value="{!acc.Type} " id="accType" />
+            </apex:pageBlockSection>
+            <apex:commandButton value="Save" onclick="createAccount();" />
+        </apex:pageBlock>
+    </apex:form>
+    
+    <div id="accTable"> </div>
+</apex:page>
