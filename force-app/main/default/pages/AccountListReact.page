@@ -1,0 +1,34 @@
+<apex:page
+  standardStylesheets="false"
+  controller="AccountListController"
+  sidebar="false"
+  showHeader="false"
+  applyBodyTag="false"
+  applyHtmlTag="false"
+  docType="html-5.0"
+>
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js" />
+      <script
+        src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"
+      />
+      <script
+        src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+      />
+
+      <script type="text/jsx" src="{!$Resource.AccountApp}" />
+    </head>
+
+    <body>
+      <div id="app-container" />
+
+      <script type="text/jsx">
+        'use strict'; React.render(React.createElement(AccountApp, {}), document.getElementById('app-container'));
+      </script>
+    </body>
+  </html>
+</apex:page>
